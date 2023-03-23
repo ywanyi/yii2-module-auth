@@ -23,16 +23,16 @@ class RoleController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],
+//                'access' => [
+//                    'class' => AccessControl::className(),
+//                    'rules' => [
+//                        [
+////                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+//                            'allow' => true,
+//                            'roles' => ['@'],
+//                        ],
+//                    ],
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

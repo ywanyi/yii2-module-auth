@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var ywanyi\auth\backend\models\RoleSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Items');
+$this->title = Yii::t('app', 'Roles');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="item-index">
@@ -30,12 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'name',
-            'type',
+//            'type',
             'description:ntext',
             'rule_name',
             'data',
-            //'created_at',
-            //'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Item $model, $key, $index, $column) {
