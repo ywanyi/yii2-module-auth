@@ -3,6 +3,8 @@
 namespace ywanyi\auth\common\models;
 
 use Yii;
+use yii\rbac\Permission;
+use yii\rbac\Role;
 
 /**
  * This is the model class for table "{{%item}}".
@@ -145,5 +147,64 @@ class Item extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ItemQuery(get_called_class());
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->getIsNewRecord()) {
+            return $this->insert($runValidation, $attributeNames);
+        }
+
+        return $this->update($runValidation, $attributeNames) !== false;
+    }
+
+    public function insert($runValidation = true, $attributes = null)
+    {
+        $authManager = Yii::$app->getAuthManager();
+        switch ($this->type){
+            case \yii\rbac\Item::TYPE_ROLE:
+                $role = new Role();
+                $role->type = \yii\rbac\Item::TYPE_ROLE;
+                $role->name = $this->name;
+                $role->data = $this->data;
+                $role->description = $this->description;
+                $role->ruleName = $this->ruleName;
+                return $authManager->add($role);
+                break;
+            case \yii\rbac\Item::TYPE_PERMISSION:
+                $permission = new Permission();
+                $permission->type = \yii\rbac\Item::TYPE_PERMISSION;
+                $permission->name = $this->name;
+                $permission->data = $this->data;
+                $permission->description = $this->description;
+                $permission->ruleName = $this->ruleName;
+                return $authManager->add($permission);
+                break;
+        }
+    }
+
+    function update($runValidation = true, $attributeNames = null)
+    {
+        $authManager = Yii::$app->getAuthManager();
+        switch ($this->type){
+            case \yii\rbac\Item::TYPE_ROLE:
+                $role = $authManager->getRole($this->name);
+                $role->type = \yii\rbac\Item::TYPE_ROLE;
+                $role->name = $this->name;
+                $role->data = $this->data;
+                $role->description = $this->description;
+                $role->ruleName = $this->ruleName;
+                return $authManager->update($this->name,$role);
+                break;
+            case \yii\rbac\Item::TYPE_PERMISSION:
+                $permission = $authManager->getPermission($this->name);
+                $permission->type = \yii\rbac\Item::TYPE_PERMISSION;
+                $permission->name = $this->name;
+                $permission->data = $this->data;
+                $permission->description = $this->description;
+                $permission->ruleName = $this->ruleName;
+                return $authManager->update($this->name,$permission);
+                break;
+        }
     }
 }

@@ -22,16 +22,16 @@ class RuleController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],
+//                'access' => [
+//                    'class' => AccessControl::className(),
+//                    'rules' => [
+//                        [
+//                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+//                            'allow' => true,
+//                            'roles' => ['@'],
+//                        ],
+//                    ],
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -136,6 +136,8 @@ class RuleController extends Controller
      */
     protected function findModel($name)
     {
+        $authManager = \Yii::$app->getAuthManager();
+        $rule = $authManager->getRule($name);
         if (($model = Rule::findOne(['name' => $name])) !== null) {
             return $model;
         }

@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
+                'icons' => Yii::$app->params['icons'],
                 'urlCreator' => function ($action, Item $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'name' => $model->name]);
                  }
